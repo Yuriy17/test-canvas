@@ -7,6 +7,7 @@
 
 .table{
   border-collapse: collapse;
+  position: relative;
 }
 
 .table, th, td{
@@ -42,28 +43,6 @@
   }
 }
 
-.figure-block{
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 10px 0;
-}
-.figure{
-  width: 100px;
-  height: 100px;
-  cursor: pointer;
-}
-
-.circle {
-  border-radius: 50%;
-  background-color: #990011;
-}
-
-.square {
-  background-color: #278040;
-}
-
-.canvas {
-  width: 800px;
-  height: 800px;
+#workspace{
+  position: relative;
 }

@@ -1,0 +1,32 @@
+
+.figure{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  min-height: 105px;
+  padding: 10px 0;
+  &__item{
+    position: absolute;
+    z-index: 1;
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    border: 2px solid #0F4C81;
+    &_selected{
+      border-color: #cce7ff;
+    }
+  }
+
+  &__circle {
+    border-radius: 50%;
+    background-color: #990011;
+  }
+  
+  &__square {
+    background-color: #278040;
+  }
+
+
+
+}
+

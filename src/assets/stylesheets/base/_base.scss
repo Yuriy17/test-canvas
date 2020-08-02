@@ -16,3 +16,7 @@ a {
 .hide{
   display: none;
 }
+
+* {
+  user-select: none;
+}
