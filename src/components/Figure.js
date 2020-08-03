@@ -9,13 +9,17 @@ export default class Figure {
     this.tableElement = tableElement;
     this.mainRowElement = mainRowElement;
     this.canvasElement = canvasElement;
+    this.figures = {
+      circles: [],
+      squares: []
+    }
 
     switch (constant) {
       case FIGURES.circle:
-        this.figure = new Circle();
+        this.figure = new Circle(this.figures.circles);
         break;
       case FIGURES.square:
-        this.figure = new Square();
+        this.figure = new Square(this.figures.squares);
         break;
 
       default:
@@ -36,6 +40,10 @@ export default class Figure {
     this.onMouseUp = this.onMouseUp.bind(this);
     this.isDrag = false;
     element.addEventListener('mousedown', this.onMouseDown);
+
+    // canvasElement.addEventListener('mousemove',(e)=>{
+    //   console.log(e);
+    // })
   }
 
   moveAt(pageX, pageY) {
