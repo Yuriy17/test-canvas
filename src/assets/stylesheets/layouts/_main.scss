@@ -8,6 +8,7 @@
 .table{
   border-collapse: collapse;
   position: relative;
+  border-spacing: 0;
 }
 
 .table, th, td{
@@ -31,15 +32,10 @@
     font-size: 2rem;
   }
 
-  // .row__figures-cell
-
-  &__figures-cell {
-    min-width: 200px;
-  }
-
   // .row__canvas-cell
 
   &__canvas-cell {
+    padding: 0;
   }
 }
 
