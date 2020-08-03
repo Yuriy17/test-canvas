@@ -1,8 +1,7 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
-
 const ENV = process.env.npm_lifecycle_event;
 const isDev = ENV === 'dev';
 const isProd = ENV === 'build';
@@ -24,30 +23,31 @@ function setDMode() {
 }
 
 const config = {
-  target: "web",
-  entry: {index: './src/index.js'},
+  target: 'web',
+  entry: { index: './src/index.js' },
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    filename: '[name].js',
   },
   mode: setDMode(),
   devtool: setDevTool(),
   module: {
-    rules: [{
+    rules: [
+      {
         test: /\.html$/,
-        use: [{
-          loader: 'html-loader',
-          options: {
-            minimize: false
-          }
-        }]
+        use: [
+          {
+            loader: 'html-loader',
+            options: {
+              minimize: false,
+            },
+          },
+        ],
       },
       {
         test: /\.js$/,
-        use: ['babel-loader', 'eslint-loader' ],
-        exclude: [
-          /node_modules/
-        ]
+        use: ['babel-loader', 'eslint-loader'],
+        exclude: [/node_modules/],
       },
       {
         test: /\.css$/,
@@ -57,13 +57,14 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
-          }, {
+              sourceMap: true,
+            },
+          },
+          {
             loader: 'postcss-loader',
-            options: { sourceMap: true, config: { path: './postcss.config.js' } }
-          }
-        ]
+            options: { sourceMap: true, config: { path: './postcss.config.js' } },
+          },
+        ],
       },
       {
         test: /\.scss$/,
@@ -73,29 +74,33 @@ const config = {
           {
             loader: 'css-loader',
             options: {
-              sourceMap: true
-            }
-          }, {
+              sourceMap: true,
+            },
+          },
+          {
             loader: 'postcss-loader',
-            options: { sourceMap: true, config: { path: './postcss.config.js' } }
-          }, {
+            options: { sourceMap: true, config: { path: './postcss.config.js' } },
+          },
+          {
             loader: 'sass-loader',
             options: {
-              sourceMap: true
-            }
-          }
-        ]
+              sourceMap: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|ttf|otf|eot)$/,
-        use: [{
-          loader: 'file-loader',
-          options: {
-            outputPath: 'assets/fonts'
-          }
-        }]
-      }
-    ]
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              outputPath: 'assets/fonts',
+            },
+          },
+        ],
+      },
+    ],
   },
 
   plugins: [
@@ -104,7 +109,8 @@ const config = {
     }),
     new HtmlWebPackPlugin({
       template: './src/index.html',
-      filename: './index.html'
+      filename: './index.html',
+      favicon: './src/favicon.ico',
     }),
   ],
 
@@ -115,8 +121,8 @@ const config = {
     overlay: false,
     stats: 'errors-only',
     clientLogLevel: 'none',
-  }
-}
+  },
+};
 
 if (isProd) {
   config.plugins.push(
@@ -129,8 +135,9 @@ if (isProd) {
         ie8: false,
         compress: true,
         warnings: true,
-      }})
+      },
+    })
   );
-};
+}
 
 module.exports = config;
