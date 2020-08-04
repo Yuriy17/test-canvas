@@ -3,3 +3,8 @@ export const FIGURES = {
   circle: 'circle',
   square: 'square',
 };
+
+export const FLAGS = {
+  white: 'white',
+  select: 'select',
+};

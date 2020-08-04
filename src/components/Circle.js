@@ -24,7 +24,13 @@ export default class Circle {
     const radiusWithoutBorder = this.element.offsetWidth / 2 - 2;
     this.ctx.beginPath();
     this.ctx.lineWidth = '4';
-    this.ctx.arc(x + radiusWithoutBorder, y + radiusWithoutBorder, radiusWithoutBorder, 0, 2 * Math.PI);
+    this.ctx.arc(
+      x + radiusWithoutBorder + 2,
+      y + radiusWithoutBorder + 2,
+      radiusWithoutBorder,
+      0,
+      2 * Math.PI
+    );
     this.ctx.strokeStyle = 'black';
     this.ctx.stroke();
 
@@ -88,7 +94,7 @@ export default class Circle {
         this.drawFromCenter(element.x, element.y, this.color, 'black');
         this.canvasElement.addEventListener('mousemove', this.onMouseMove);
         this.canvasElement.addEventListener('mouseup', this.onMouseUp);
-      } 
+      }
     });
   }
 
@@ -101,7 +107,6 @@ export default class Circle {
       this.color,
       'black'
     );
-    
   }
 
   onMouseMove(event) {
@@ -111,7 +116,7 @@ export default class Circle {
       if ((element.x - event.offsetX) ** 2 + (element.y - event.offsetY) ** 2 < radius ** 2) {
         this.drawFromCenter(element.x, element.y, 'white');
         this.indexOfCircle = index;
-      } 
+      }
     });
 
     if (this.circles.length - 1 === this.indexOfCircle) {

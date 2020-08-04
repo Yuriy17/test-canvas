@@ -1,4 +1,4 @@
-import { FIGURES } from '../utils/constants';
+import { FIGURES, FLAGS } from '../utils/constants';
 import Circle from './Circle';
 import Square from './Square';
 
@@ -78,8 +78,9 @@ export default class Figure {
   drawIfCanvas(x, y) {
     if (x > this.tableElement.offsetWidth - this.canvasElement.offsetWidth) {
       this.figure.draw(
-        x  - (this.tableElement.offsetWidth - this.canvasElement.offsetWidth),
-        y - this.mainRowElement.offsetTop
+        x  - (this.tableElement.offsetWidth - this.canvasElement.offsetWidth)+ 2,
+        y - this.mainRowElement.offsetTop,
+        FLAGS.select
       );
     }
   }

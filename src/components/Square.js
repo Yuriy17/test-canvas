@@ -1,3 +1,5 @@
+import { FLAGS } from '../utils/constants';
+
 export default class Square {
   constructor(squares) {
     this.squares = squares;
@@ -15,72 +17,49 @@ export default class Square {
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
 
-    canvasElement.addEventListener('mousedown', this.onMouseDown, {once: true});
+    canvasElement.addEventListener('mousedown', this.onMouseDown);
   }
 
-  draw(x, y) {
-    const sideWithoutBorder = this.element.offsetWidth - 4;
-    this.ctx.beginPath();
-    this.ctx.lineWidth = '4';
-    this.ctx.rect(x + 1, y + 1, sideWithoutBorder, sideWithoutBorder);
-    this.ctx.strokeStyle = 'black';
-    this.ctx.stroke();
-    this.ctx.fillStyle = this.color;
-    this.ctx.fillRect(x + 1, y + 1, sideWithoutBorder, sideWithoutBorder);
-
-    this.squares.push({ x, y });
-  }
-
-  drawSquare(x, y, fillStyle, strokeStyle) {
-    if (
-      x > this.canvasElement.offsetWidth - this.element.offsetWidth / 2 ||
-      x < this.element.offsetWidth / 2 ||
-      y > this.canvasElement.offsetHeight - this.element.offsetWidth / 2 ||
-      y < this.element.offsetWidth / 2
-    ) {
-      this.delete(x, y);
-    } else {
-      const sideWithoutBorder = this.element.offsetWidth - 4;
-      this.ctx.beginPath();
-      this.ctx.lineWidth = '4';
-      this.ctx.rect(
-        x + 1 - this.element.offsetWidth / 2,
-        y + 1 - this.element.offsetWidth / 2,
-        sideWithoutBorder,
-        sideWithoutBorder
-      );
-      this.ctx.strokeStyle = strokeStyle;
-      this.ctx.stroke();
-      this.ctx.fillStyle = fillStyle;
-      this.ctx.fillRect(
-        x + 1 - this.element.offsetWidth / 2,
-        y + 1 - this.element.offsetWidth / 2,
-        sideWithoutBorder,
-        sideWithoutBorder
-      );
-      this.squares.push({ x, y });
+  draw(x, y, flag) {
+    let strokeStyle;
+    let fillStyle;
+    switch (flag) {
+      case FLAGS.white:
+        strokeStyle = 'white';
+        fillStyle = 'white';
+        break;
+      case FLAGS.select:
+        strokeStyle = 'black';
+        fillStyle = this.color;
+        this.squares.push({ x, y });
+        this.indexOfSquare = this.squares.length - 1;
+        break;
+      default:
+        strokeStyle = 'white';
+        fillStyle = this.color;
+        this.squares.push({ x, y });
+        this.indexOfSquare = this.squares.length - 1;
+        break;
     }
+    const side = this.element.offsetWidth;
+    this.ctx.beginPath();
+    this.ctx.lineWidth = '2';
+    this.ctx.rect(x + 1, y + 1, side - 2, side - 2);
+    this.ctx.strokeStyle = strokeStyle;
+    this.ctx.stroke();
+    this.ctx.fillStyle = fillStyle;
+    this.ctx.fillRect(x + 2, y + 2, side - 4, side - 4);
   }
 
   delete(x, y) {
     const sideWithoutBorder = this.element.offsetWidth - 4;
-      this.ctx.beginPath();
-      this.ctx.lineWidth = '4';
-      this.ctx.rect(
-        x + 1 ,
-        y + 1 ,
-        sideWithoutBorder,
-        sideWithoutBorder
-      );
-      this.ctx.strokeStyle = 'white';
-      this.ctx.stroke();
-      this.ctx.fillStyle = 'white';
-      this.ctx.fillRect(
-        x + 1 ,
-        y + 1 ,
-        sideWithoutBorder,
-        sideWithoutBorder
-      );
+    this.ctx.beginPath();
+    this.ctx.lineWidth = '4';
+    this.ctx.rect(x + 1, y + 1, sideWithoutBorder, sideWithoutBorder);
+    this.ctx.strokeStyle = 'white';
+    this.ctx.stroke();
+    this.ctx.fillStyle = 'white';
+    this.ctx.fillRect(x + 1, y + 1, sideWithoutBorder, sideWithoutBorder);
 
     this.squares.splice(this.indexOfSquare, 1);
     this.canvasElement.removeEventListener('mousemove', this.onMouseMove);
@@ -105,12 +84,7 @@ export default class Square {
   onMouseUp() {
     this.canvasElement.removeEventListener('mousemove', this.onMouseMove);
     this.canvasElement.removeEventListener('mouseup', this.onMouseUp);
-    this.drawSquare(
-      this.squares[this.indexOfSquare].x,
-      this.squares[this.indexOfSquare].y,
-      this.color,
-      'black'
-    );
+    this.draw(this.squares[this.indexOfSquare].x, this.squares[this.indexOfSquare].y,FLAGS.select);
   }
 
   onMouseMove(event) {
@@ -121,21 +95,18 @@ export default class Square {
         element.y < event.offsetY &&
         element.x + 101 > event.offsetY
       ) {
-        this.drawSquare(element.x, element.y, 'white', 'white');
+        this.ctx.beginPath();
+        this.ctx.moveTo(element.x, element.y);
+        this.ctx.lineWidth = '50';
+        this.ctx.strokeStyle = 'white';
+        this.ctx.lineTo(event.offsetX, event.offsetY);
+        this.ctx.stroke();
         this.indexOfSquare = index;
+        this.draw(element.x, element.y, FLAGS.white);
       }
     });
+    this.squares.splice(this.indexOfSquare, 1);
 
-    if (this.squares.length - 1 === this.indexOfSquare) {
-      this.squares.pop();
-    } else if (this.indexOfSquare >= 0) {
-      this.squares.splice(this.indexOfSquare, 1);
-    }
-    this.drawSquare(event.offsetX, event.offsetY, this.color);
-    this.squares.push({
-      x: event.offsetX,
-      y: event.offsetY,
-    });
-    this.indexOfSquare = this.squares.length - 1;
+    this.draw(event.offsetX - this.element.offsetWidth / 2, event.offsetY - this.element.offsetWidth / 2);
   }
 }
